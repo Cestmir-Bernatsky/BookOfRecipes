@@ -1,0 +1,48 @@
+﻿@page
+@model BookOfRecipes.Pages.AllRecipesModel
+
+@{
+    ViewData["Title"] = "AllRecipes";
+}
+
+<h1>AllRecipes</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RecipeEntity[0].NameOfRecipe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecipeEntity[0].Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecipeEntity[0].Directions)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.RecipeEntity) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameOfRecipe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Directions)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./RecipeDetails" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

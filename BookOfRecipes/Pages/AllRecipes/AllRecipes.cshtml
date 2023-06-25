@@ -1,0 +1,49 @@
+﻿@page
+@model BookOfRecipes.Pages.AllRecipes.AllRecipesModel
+@{
+}
+
+<div class="text-center">
+    <h4 class="display-4">Seznam receptů</h4>
+    <table class="table table-striped mt-5">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Název
+                </th>
+                <th>
+                    Autor
+                </th>
+                <th>
+                    Tag
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var recipe in Model.AllRecipes)
+            {
+
+                <tr>
+                    <td>
+                        @recipe.Id
+                    </td>
+                    <td>
+                        <a class="btn btn-success" asp-area="" asp-page="/Details/RecipeDetails"
+                           asp-route-id="@recipe.Id">@recipe.NameOfRecipe</a>
+                    </td>
+                    <td>
+                        @recipe.Author
+                    </td>
+                    <td>
+                        ###
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+</div>

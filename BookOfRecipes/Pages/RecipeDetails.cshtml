@@ -1,0 +1,43 @@
+﻿@page
+@model BookOfRecipes.Pages.RecipeDetailsModel
+
+@{
+    ViewData["Title"] = "RecipeDetails";
+}
+
+<h1>RecipeDetails</h1>
+
+<div>
+    <h4>RecipeEntity</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RecipeEntity.NameOfRecipe)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RecipeEntity.NameOfRecipe)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RecipeEntity.Author)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RecipeEntity.Author)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RecipeEntity.Directions)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RecipeEntity.Directions)
+        </dd>
+        @foreach(var ingredient in Model.RecipeEntity.Ingredients)
+        {
+            <dd class="col-sm-10">
+                <h4>@ingredient.NameOfIngredient)</h4>
+            </dd>
+        }
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.RecipeEntity?.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
