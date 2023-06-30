@@ -1,0 +1,27 @@
+﻿@page
+@model BookOfRecipes.Pages.NewRecipe.AddNewRecipeModel
+@{
+}
+
+<form method="post">
+    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+        <input type="text" name="Recipe.NameOfRecipe" asp-for="Recipe.NameOfRecipe" />
+        <label for="recipeName">Name of the recipe</label>
+        @*<span asp-validation-for="Recipe.NameOfRecipe" class="text-danger"></span>*@
+    <input type="text" name="Recipe.Author" asp-for="Recipe.Author" />
+        <label for="authorName">Author</label>
+        @*<span asp-validation-for="Recipe.Author" class="text-danger"></span>*@
+    <input type="text" name="Recipe.Directions" asp-for="Recipe.Directions" />
+        <label for="directions">Directions</label>
+        <h4>Ingredience</h4>
+        <br>
+    @*@foreach(var ingredient in Model.Recipe.Ingredients)
+    {
+        <input name="areChecked" type="checkbox" value="@ingredient.NameOfIngredient"/> @ingredient.NameOfIngredient <br />
+    }*@
+    @*<span asp-validation-for="Recipe.Directions" class="text-danger"></span>*@
+        @*<input type="text" name="recipeName" />
+        <label for="recipeName">Name of the recipe</label>*@
+        @*<button type="submit">Submit!</button>    *@
+        <input type="submit">
+</form>

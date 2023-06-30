@@ -1,0 +1,44 @@
+﻿@page
+@model BookOfRecipes.Pages.AddNewRecipe___Model
+
+@{
+    ViewData["Title"] = "AddNewRecipe___";
+}
+
+<h1>AddNewRecipe___</h1>
+
+<h4>RecipeEntity</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RecipeEntity.NameOfRecipe" class="control-label"></label>
+                <input asp-for="RecipeEntity.NameOfRecipe" class="form-control" />
+                <span asp-validation-for="RecipeEntity.NameOfRecipe" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecipeEntity.Author" class="control-label"></label>
+                <input asp-for="RecipeEntity.Author" class="form-control" />
+                <span asp-validation-for="RecipeEntity.Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecipeEntity.Directions" class="control-label"></label>
+                <input asp-for="RecipeEntity.Directions" class="form-control" />
+                <span asp-validation-for="RecipeEntity.Directions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
