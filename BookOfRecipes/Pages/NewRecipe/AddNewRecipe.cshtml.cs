@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BookOfRecipes.Pages.NewRecipe
 {
+    [BindProperties(SupportsGet = true)]
     public class AddNewRecipeModel : PageModel
     {
         private readonly BookOfRecipes.Data.ApplicationDbContext _context;
@@ -14,13 +15,12 @@ namespace BookOfRecipes.Pages.NewRecipe
         }
         [BindProperty]
         public RecipeEntity Recipe { get; set; }
-        [BindProperty]
-        public List<RecipeEntity> ListOfIngredients { get; set; }
 
-        //public IList<IngredientEntitty> Ingredient { get; set; }   
+        public List<IngredientEntitty> ListOfIngredients { get; set; }
+
         public void OnGet()
         {
-            //Ingredient = _context.Ingredients.ToList();
+            ListOfIngredients = _context.Ingredients.ToList();
         }
 
         public async Task <IActionResult> OnPostAsync() 
