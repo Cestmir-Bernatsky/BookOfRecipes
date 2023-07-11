@@ -29,10 +29,10 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.RecipeEntity.Directions)
         </dd>
-        @foreach(var ingredient in Model.RecipeEntity.Ingredients)
+        @foreach(var ingredient in Model.RecipeEntity.RecipeIngredients)
         {
             <dd class="col-sm-10">
-                <h4>@ingredient.NameOfIngredient)</h4>
+                <h4>@ingredient.Ingredient.NameOfIngredient)</h4>
             </dd>
         }
     </dl>

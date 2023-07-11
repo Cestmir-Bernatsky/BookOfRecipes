@@ -2,6 +2,8 @@ using BookOfRecipes.Data;
 using BookOfRecipes.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BookOfRecipes.Pages.AllRecipes
 {
@@ -14,9 +16,9 @@ namespace BookOfRecipes.Pages.AllRecipes
         }
 
         public List<RecipeEntity> AllRecipes = new List<RecipeEntity>(); 
-        public void OnGet()
+        public async void OnGet()
         {
-            AllRecipes = _context.Recipes.ToList(); 
+            AllRecipes =  _context.Recipes.ToList();
         }
     }
 }

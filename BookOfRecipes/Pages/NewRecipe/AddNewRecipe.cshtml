@@ -2,30 +2,184 @@
 @model BookOfRecipes.Pages.NewRecipe.AddNewRecipeModel
 @{
 }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@*<script src="~/bundles/jquery"></script>*@
+<script src="~/js/tinymce/tinymce.min.js"></script>
+<script src="~/js/textarea.js"></script>
 
-<form method="post">
+
+<div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role="switch" id="isMetricCheckbox" >
+    <label id="flexSwitchCheckChecked" class="form-check-label" for="isMetricCheckbox">Metrické jednotky</label>
+</div>
+
+<form method="post" id="myForm">
+
     @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
-        <input type="text" name="Recipe.NameOfRecipe" asp-for="Recipe.NameOfRecipe" />
-        <label for="recipeName">Name of the recipe</label>
-        @*<span asp-validation-for="Recipe.NameOfRecipe" class="text-danger"></span>*@
-        <input type="text" name="Recipe.Author" asp-for="Recipe.Author" />
-        <label for="authorName">Author</label>
-        @*<span asp-validation-for="Recipe.Author" class="text-danger"></span>*@
-        <input type="text" name="Recipe.Directions" asp-for="Recipe.Directions" />
-        <label for="directions">Directions</label>
-        <h4>Ingredience</h4>
-        <br>
-        <select>
-            @foreach (var ingredient in Model.ListOfIngredients)
-            {
-                <option>@ingredient.NameOfIngredient</option>
-            }
-        </select>
-        <input type="text"/>
+    <label for="recipeName">Name of the recipe</label>
+    <input type="text" name="Recipe.NameOfRecipe" asp-for="Recipe.NameOfRecipe" />
         
-    @*<span asp-validation-for="Recipe.Directions" class="text-danger"></span>*@
-        @*<input type="text" name="recipeName" />
-        <label for="recipeName">Name of the recipe</label>*@
-        @*<button type="submit">Submit!</button>    *@
-        <input type="submit">
+        @*<span asp-validation-for="Recipe.NameOfRecipe" class="text-danger"></span>*@
+    <label for="authorName">Author</label>
+    <input type="text" name="Recipe.Author" asp-for="Recipe.Author" />
+    
+        @*<span asp-validation-for="Recipe.Author" class="text-danger"></span>*@
+    <label for="directions">Directions</label>
+    @*<input type="text" name="Recipe.Directions" asp-for="Recipe.Directions" />*@
+    <textarea id="default" asp-for="Recipe.Directions"></textarea>
+    <h4>Ingredience</h4>
+    <br>
+    @*<div id="newRow">
+        <select asp-for="ingredientsIDs" asp-items="Model.Options"></select>
+        <button type="button" class="removeRow">Remove</button>
+    </div> *@   
+
+    <input value="1" type="hidden" disabled="disabled" id="index" />
+    <div id="rowContainer">
+        <div id="newRow[0]">
+            <select id="ingredientsIDs[0]" name="ingredientIDQuantity[0].Key" asp-items="Model.Options"></select>
+            <input type="number" name="ingredientIDQuantity[0].Value" />
+            <select asp-items="Model.UnitOptions" id="unitSelect[0]" class="unitSelect" name="unitSelect[0]">
+                <option>Vyberte jednotku</option>
+            </select>
+            <button type="button" id="removeBtn[0]" onclick="RemoveRow(this)">Odebrat ingredienci</button>
+        </div>
+    </div>
+
+    <button type="button" id="addRow" onclick="Add()">Přidat ingredienci</button>
+    <input type="submit" value="Uložit">        
 </form>
+
+
+@section Scripts {
+    @*<script>
+        $(document).ready(function () {
+            // Add Ingredient button click event
+            $("#addRow").click(function () {
+                var dropdownRow = $("#newRow").find("select").first().parent().clone(); // Clone the first dropdown row
+                dropdownRow.find("select").val(""); // Clear the selected value
+                dropdownRow.find("select").attr("name", "IngredientsIDs"); // Set the name attribute
+                $("#newRow").append(dropdownRow); // Append the cloned dropdown row to the container
+            });
+
+            // Remove button click event
+            $(document).on("click", ".removeRow", function () {
+                $(this).closest(".removeRow").parent().remove(); // Remove the corresponding dropdown row
+            });
+        });
+    </script>*@
+    
+    <script>
+        function Add() {
+            let index = document.getElementById("index");
+            let div = document.getElementById("rowContainer")
+
+            let newDiv = document.createElement("div")
+            newDiv.id = "newRow[" + index.value + "]"
+            
+            let newSelect = document.createElement("select")
+            newSelect.name = "ingredientIDQuantity[" + index.value + "].Key"
+
+            let newInput = document.createElement("input")
+            newInput.name = "ingredientIDQuantity[" + index.value + "].Value"
+
+            let newRemoveBtn = document.createElement("button");
+            newRemoveBtn.textContent = "Odebrat ingredienci";
+            newRemoveBtn.id = "removeBtn[" + index.value + "]";
+            newRemoveBtn.setAttribute('onclick', 'RemoveRow(this)');
+
+            let newUnitSelect = document.createElement('select')
+            newUnitSelect.name = "unitSelect[" + index.value + "]"
+            newUnitSelect.className = "unitSelect"
+
+            
+
+            var sourceDropdown = document.getElementById("ingredientsIDs[0]")
+
+            for (var i = 0; i < sourceDropdown.options.length; i++) {
+                var option = sourceDropdown.options[i];
+                var newOption = document.createElement('option');
+                newOption.value = option.value;
+                newOption.text = option.text;
+                newSelect.appendChild(newOption)
+            }
+
+            var sourceDropdown2 = document.getElementById("unitSelect[0]")
+
+            for (var i = 0; i < sourceDropdown2.options.length; i++) {
+                var option = sourceDropdown2.options[i];
+                var newOption = document.createElement('option');
+                newOption.value = option.value;
+                newOption.text = option.text;
+                newUnitSelect.appendChild(newOption)
+            }
+
+            div.appendChild(newDiv);
+            newDiv.appendChild(newSelect);
+            newDiv.appendChild(newInput);
+            newDiv.appendChild(newUnitSelect);
+            newDiv.appendChild(newRemoveBtn);
+            index.value++;
+        }
+
+        //function Add() {
+        //    let index = document.getElementById("index");
+        //    let div = document.getElementById("newRow")
+        //    let newSelect = document.createElement("select")
+
+        //    let newInput = document.createElement("input")
+        //    newInput.name = "ingredientIDQuantity[" + index.value + "].Value"
+
+        //    let newRemoveBtn = document.createElement("button");
+        //    newRemoveBtn.textContent = "Odebrat ingredienci";
+        //    newRemoveBtn.id = "removeBtn[" + index.value + "]"
+
+        //    newSelect.name = "ingredientIDQuantity[" + index.value + "].Key"
+
+        //    var sourceDropdown = document.getElementById("ingredientsIDs[0]")
+
+        //    for (var i = 0; i < sourceDropdown.options.length; i++) {
+        //        var option = sourceDropdown.options[i];
+        //        var newOption = document.createElement('option');
+        //        newOption.value = option.value;
+        //        newOption.text = option.text;
+        //        newSelect.appendChild(newOption)
+        //    }
+        //    div.appendChild(newSelect);
+        //    div.appendChild(newInput);
+        //    div.appendChild(newRemoveBtn);
+        //    index.value++;
+        //}
+
+        function RemoveRow(button){
+            button.parentElement.remove();
+        }
+
+    </script>
+
+    <script>
+        $('#isMetricCheckbox').change(function (){
+            var isMetric = $(this).is(':checked');
+            console.log(isMetric);
+            console.log(typeof isMetric);
+            $('.unitSelect').html('<option>Vyberte jednotku</option>');
+            console.log("Here I am");
+            $.getJSON('/newrecipe/addnewrecipe?handler=Unit', { isMetric: isMetric }, function (data) {
+                console.log(data);
+                $.each(data, function(key, value) {
+                    var option = $('<option></option>').attr('value', value.id).text(value.unit);
+                    $('.unitSelect').append(option);
+                });
+            });
+        });
+
+    </script>
+
+    <script>
+            $('#isMetricCheckbox').change(function () {
+                var isChecked = $(this).prop('checked');
+                var label = isChecked ? 'Imperialni jednotky' : 'Metrické jednotky';
+                $('#flexSwitchCheckChecked').text(label);
+            });
+    </script>
+}

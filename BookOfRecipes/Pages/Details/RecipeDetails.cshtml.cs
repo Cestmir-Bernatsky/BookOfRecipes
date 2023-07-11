@@ -24,7 +24,12 @@ namespace BookOfRecipes.Pages.Details
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            var allrecipes =  await _context.Recipes.Include(r => r.Ingredients).FirstOrDefaultAsync(x => x.Id == id);
+            var allrecipes =  await _context.Recipes
+                .Include(r => r.RecipeIngredients)
+                .ThenInclude(z => z.Ingredient)
+                .ThenInclude(x => x.RecipeIngredients)
+                .ThenInclude(c => c.Units)
+                .FirstOrDefaultAsync(x => x.Id == id);
             
             if (id == null || _context.Recipes == null)
             {
