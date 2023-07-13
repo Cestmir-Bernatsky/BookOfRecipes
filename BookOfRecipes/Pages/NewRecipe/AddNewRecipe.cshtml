@@ -3,7 +3,6 @@
 @{
 }
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-@*<script src="~/bundles/jquery"></script>*@
 <script src="~/js/tinymce/tinymce.min.js"></script>
 <script src="~/js/textarea.js"></script>
 
@@ -25,14 +24,9 @@
     
         @*<span asp-validation-for="Recipe.Author" class="text-danger"></span>*@
     <label for="directions">Directions</label>
-    @*<input type="text" name="Recipe.Directions" asp-for="Recipe.Directions" />*@
     <textarea id="default" asp-for="Recipe.Directions"></textarea>
     <h4>Ingredience</h4>
     <br>
-    @*<div id="newRow">
-        <select asp-for="ingredientsIDs" asp-items="Model.Options"></select>
-        <button type="button" class="removeRow">Remove</button>
-    </div> *@   
 
     <input value="1" type="hidden" disabled="disabled" id="index" />
     <div id="rowContainer">
@@ -52,22 +46,6 @@
 
 
 @section Scripts {
-    @*<script>
-        $(document).ready(function () {
-            // Add Ingredient button click event
-            $("#addRow").click(function () {
-                var dropdownRow = $("#newRow").find("select").first().parent().clone(); // Clone the first dropdown row
-                dropdownRow.find("select").val(""); // Clear the selected value
-                dropdownRow.find("select").attr("name", "IngredientsIDs"); // Set the name attribute
-                $("#newRow").append(dropdownRow); // Append the cloned dropdown row to the container
-            });
-
-            // Remove button click event
-            $(document).on("click", ".removeRow", function () {
-                $(this).closest(".removeRow").parent().remove(); // Remove the corresponding dropdown row
-            });
-        });
-    </script>*@
     
     <script>
         function Add() {
@@ -121,35 +99,6 @@
             newDiv.appendChild(newRemoveBtn);
             index.value++;
         }
-
-        //function Add() {
-        //    let index = document.getElementById("index");
-        //    let div = document.getElementById("newRow")
-        //    let newSelect = document.createElement("select")
-
-        //    let newInput = document.createElement("input")
-        //    newInput.name = "ingredientIDQuantity[" + index.value + "].Value"
-
-        //    let newRemoveBtn = document.createElement("button");
-        //    newRemoveBtn.textContent = "Odebrat ingredienci";
-        //    newRemoveBtn.id = "removeBtn[" + index.value + "]"
-
-        //    newSelect.name = "ingredientIDQuantity[" + index.value + "].Key"
-
-        //    var sourceDropdown = document.getElementById("ingredientsIDs[0]")
-
-        //    for (var i = 0; i < sourceDropdown.options.length; i++) {
-        //        var option = sourceDropdown.options[i];
-        //        var newOption = document.createElement('option');
-        //        newOption.value = option.value;
-        //        newOption.text = option.text;
-        //        newSelect.appendChild(newOption)
-        //    }
-        //    div.appendChild(newSelect);
-        //    div.appendChild(newInput);
-        //    div.appendChild(newRemoveBtn);
-        //    index.value++;
-        //}
 
         function RemoveRow(button){
             button.parentElement.remove();

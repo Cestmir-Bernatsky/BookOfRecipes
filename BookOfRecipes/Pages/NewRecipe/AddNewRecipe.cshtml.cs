@@ -17,25 +17,23 @@ namespace BookOfRecipes.Pages.NewRecipe
         }
         [BindProperty]
         public RecipeEntity Recipe { get; set; }
-        //public RecipeIngredientEntity IngredientsOfRecipeToAdd { get; set; }
+
         [BindProperty]
         public List<int> ingredientsIDs { get; set; }
+
         [BindProperty]
         public Dictionary<int, int> ingredientIDQuantity { get; set; }
+
         [BindProperty]
         public List<int> unitSelect { get; set; }
 
-        public bool IsMetric { get; set; }
 
-
-        //public List<IngredientEntitty> ListOfIngredients { get; set; }
         public List<SelectListItem> Options { get; set; }
         public List<SelectListItem> UnitOptions { get; set; }
 
 
-        public void OnGet()
+        public void OnGet(bool isMetric)
         {
-            //ListOfIngredients = _context.Ingredients.ToList();    
 
             Options = _context.Ingredients.Select(x => new SelectListItem
             {
@@ -43,7 +41,7 @@ namespace BookOfRecipes.Pages.NewRecipe
                 Text = x.NameOfIngredient
             }).ToList();
 
-            if (!IsMetric)
+            if (!isMetric)
             {
                 UnitOptions = _context.Units.Where(y => y.unitType == "metric").Select(y => new SelectListItem
                 {
@@ -94,21 +92,8 @@ namespace BookOfRecipes.Pages.NewRecipe
                 iter++;
             }
 
-            //foreach (var ingredientId in ingredientsIDs)
-            //{
-            //    var recipeIngredient = new RecipeIngredientEntity
-            //    {
-            //        RecipesId = Recipe.Id,
-            //        IngredientsId = ingredientId,
-            //        Quantity = 10
-
-            //    };
-            //    Recipe.RecipeIngredients.Add(recipeIngredient);
-            //}
             _context.Recipes.Add(Recipe);
             await _context.SaveChangesAsync();
-            //ListOfIngredients = _context.Ingredients.ToList();
-            //Options = _context.Ingredients.ToList();
             return Page();
         }
     }

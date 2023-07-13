@@ -31,30 +31,5 @@
         <div class="col-9">
             @Html.Raw(Model.Recipe.Directions)
         </div>
-    </div>
-    
-    
-    @*@foreach(var recipe in Model.AllRecipes)
-    {
-        <h4>@recipe.NameOfRecipe</h4>
-
-        @foreach (var ingredient in recipe.Ingredients)
-        {
-            <h4>@ingredient.NameOfIngredient</h4>
-        }
-    }*@
-
-    @*<dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Recipe.NameOfRecipe)
-        </dt>
-        <dd class="col-sm-10">
-            @foreach(var ingredient in Model.Recipe.Ingredients)
-            {
-             <p>@ingredient.NameOfIngredient</p>   
-            }
-        </dd>
-    </dl>*@
-
-    
+    </div>   
 </div>
