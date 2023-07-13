@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Data.SqlTypes;
 
 namespace BookOfRecipes.Pages.NewRecipe
 {
@@ -80,7 +81,7 @@ namespace BookOfRecipes.Pages.NewRecipe
             Recipe.RecipeIngredients = new List<RecipeIngredientEntity>();
             int iter = 0;
             foreach (var ingredient in ingredientIDQuantity)
-            { 
+            {
                 var recipeIngredient = new RecipeIngredientEntity
                 {
                     RecipesId = Recipe.Id,
@@ -92,9 +93,17 @@ namespace BookOfRecipes.Pages.NewRecipe
                 iter++;
             }
 
-            _context.Recipes.Add(Recipe);
-            await _context.SaveChangesAsync();
-            return Page();
+            if (await _context.Recipes.AnyAsync(r => r.NameOfRecipe == Recipe.NameOfRecipe && r.Author == Recipe.Author))
+            {
+                ModelState.AddModelError("DuplicateRecipe", "Tento recept již existuje");
+                return Page();
+            }else
+            {
+                _context.Recipes.Add(Recipe);
+                await _context.SaveChangesAsync();
+                return Redirect("/AllRecipes/AllRecipes");
+            }
+            
         }
     }
 }

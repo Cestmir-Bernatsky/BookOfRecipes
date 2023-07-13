@@ -16,6 +16,7 @@ namespace BookOfRecipes.Pages.AllRecipes
         }
 
         public List<RecipeEntity> AllRecipes = new List<RecipeEntity>(); 
+
         public async void OnGet()
         {
             AllRecipes =  _context.Recipes.ToList();

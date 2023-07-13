@@ -6,11 +6,13 @@
 <script src="~/js/tinymce/tinymce.min.js"></script>
 <script src="~/js/textarea.js"></script>
 
+<h3 align="center" style="color:darkred">@Html.ValidationMessage("DuplicateRecipe")</h3>
 
 <div class="form-check form-switch">
     <input class="form-check-input" type="checkbox" role="switch" id="isMetricCheckbox" >
     <label id="flexSwitchCheckChecked" class="form-check-label" for="isMetricCheckbox">Metrické jednotky</label>
 </div>
+
 
 <form method="post" id="myForm">
 
