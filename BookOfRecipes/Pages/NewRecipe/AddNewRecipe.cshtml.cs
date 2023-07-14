@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Data.SqlTypes;
 
 namespace BookOfRecipes.Pages.NewRecipe
@@ -23,9 +24,11 @@ namespace BookOfRecipes.Pages.NewRecipe
         public List<int> ingredientsIDs { get; set; }
 
         [BindProperty]
+        [EachValueRequiredAttribute(ErrorMessage = "Množství je povinné")]
         public Dictionary<int, int> ingredientIDQuantity { get; set; }
 
         [BindProperty]
+        [EachValueRequired(ErrorMessage = "Jednotka je povinná")]
         public List<int> unitSelect { get; set; }
 
 
@@ -71,37 +74,40 @@ namespace BookOfRecipes.Pages.NewRecipe
         public async Task<IActionResult> OnPostAsync()
         {
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
-            //else
-            //{
-            //_context.Recipes.Add(Recipe);
-            Recipe.RecipeIngredients = new List<RecipeIngredientEntity>();
-            int iter = 0;
-            foreach (var ingredient in ingredientIDQuantity)
+            if (!ModelState.IsValid)
             {
-                var recipeIngredient = new RecipeIngredientEntity
-                {
-                    RecipesId = Recipe.Id,
-                    IngredientsId = ingredient.Key,
-                    Quantity = ingredient.Value,
-                    unitsId = unitSelect[iter]
-                };
-                Recipe.RecipeIngredients.Add(recipeIngredient);
-                iter++;
-            }
-
-            if (await _context.Recipes.AnyAsync(r => r.NameOfRecipe == Recipe.NameOfRecipe && r.Author == Recipe.Author))
-            {
-                ModelState.AddModelError("DuplicateRecipe", "Tento recept již existuje");
+                OnGet(isMetric: false);
+                await OnGetUnit(isMetric: false);
                 return Page();
-            }else
+            }
+            else
             {
-                _context.Recipes.Add(Recipe);
-                await _context.SaveChangesAsync();
-                return Redirect("/AllRecipes/AllRecipes");
+                Recipe.RecipeIngredients = new List<RecipeIngredientEntity>();
+                int iter = 0;
+                foreach (var ingredient in ingredientIDQuantity)
+                {
+                    var recipeIngredient = new RecipeIngredientEntity
+                    {
+                        RecipesId = Recipe.Id,
+                        IngredientsId = ingredient.Key,
+                        Quantity = ingredient.Value,
+                        unitsId = unitSelect[iter]
+                    };
+                    Recipe.RecipeIngredients.Add(recipeIngredient);
+                    iter++;
+                }
+
+                if (await _context.Recipes.AnyAsync(r => r.NameOfRecipe == Recipe.NameOfRecipe && r.Author == Recipe.Author))
+                {
+                    ModelState.AddModelError("DuplicateRecipe", "Tento recept již existuje");
+                    return Page();
+                }
+                else
+                {
+                    _context.Recipes.Add(Recipe);
+                    await _context.SaveChangesAsync();
+                    return Redirect("/AllRecipes/AllRecipes");
+                }
             }
             
         }

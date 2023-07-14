@@ -19,14 +19,17 @@
     @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
     <label for="recipeName">Name of the recipe</label>
     <input type="text" name="Recipe.NameOfRecipe" asp-for="Recipe.NameOfRecipe" />
+    <span asp-validation-for="Recipe.NameOfRecipe" class="text-danger"></span>
         
         @*<span asp-validation-for="Recipe.NameOfRecipe" class="text-danger"></span>*@
     <label for="authorName">Author</label>
     <input type="text" name="Recipe.Author" asp-for="Recipe.Author" />
+    <span asp-validation-for="Recipe.Author" class="text-danger"></span>
     
         @*<span asp-validation-for="Recipe.Author" class="text-danger"></span>*@
     <label for="directions">Directions</label>
     <textarea id="default" asp-for="Recipe.Directions"></textarea>
+    <span asp-validation-for="Recipe.Directions" class="text-danger"></span>
     <h4>Ingredience</h4>
     <br>
 
@@ -35,9 +38,11 @@
         <div id="newRow[0]">
             <select id="ingredientsIDs[0]" name="ingredientIDQuantity[0].Key" asp-items="Model.Options"></select>
             <input type="number" name="ingredientIDQuantity[0].Value" />
+            <span asp-validation-for="ingredientIDQuantity" class="text-danger"></span>
             <select asp-items="Model.UnitOptions" id="unitSelect[0]" class="unitSelect" name="unitSelect[0]">
-                <option>Vyberte jednotku</option>
+                <option>Jednotka</option>
             </select>
+            <span asp-validation-for="unitSelect" class="text-danger"></span>
             <button type="button" id="removeBtn[0]" onclick="RemoveRow(this)">Odebrat ingredienci</button>
         </div>
     </div>
@@ -113,7 +118,7 @@
             var isMetric = $(this).is(':checked');
             console.log(isMetric);
             console.log(typeof isMetric);
-            $('.unitSelect').html('<option>Vyberte jednotku</option>');
+            $('.unitSelect').html('<option>Jednotka</option>');
             console.log("Here I am");
             $.getJSON('/newrecipe/addnewrecipe?handler=Unit', { isMetric: isMetric }, function (data) {
                 console.log(data);

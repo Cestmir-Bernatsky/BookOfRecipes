@@ -1,4 +1,6 @@
-﻿namespace BookOfRecipes.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BookOfRecipes.Entities
 {
     public class RecipeIngredientEntity
     {
@@ -7,6 +9,7 @@
 
         public int IngredientsId { get; set; }
         public IngredientEntitty Ingredient { get; set; }
+
 
         public int Quantity { get; set; }
 
