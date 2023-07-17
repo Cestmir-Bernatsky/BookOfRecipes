@@ -7,6 +7,6 @@ public class EachValueRequiredAttribute : ValidationAttribute
     public override bool IsValid(object value)
     {
         var dictionary = value as Dictionary<int, int>;
-        return dictionary != null && dictionary.All(pair => pair.Value != 0);
+        return dictionary != null && dictionary.All(pair => pair.Value != 0 && pair.Key != 0);
     }
 }

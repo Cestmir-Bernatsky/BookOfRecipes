@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 using System.Data.SqlTypes;
 
 namespace BookOfRecipes.Pages.NewRecipe
@@ -18,22 +17,22 @@ namespace BookOfRecipes.Pages.NewRecipe
             _context = context;
         }
         [BindProperty]
-        public RecipeEntity Recipe { get; set; }
+        public RecipeEntity? Recipe { get; set; } = new RecipeEntity();
 
         [BindProperty]
-        public List<int> ingredientsIDs { get; set; }
+        public List<int>? ingredientsIDs { get; set; } = new List<int>();
 
         [BindProperty]
         [EachValueRequiredAttribute(ErrorMessage = "Množství je povinné")]
-        public Dictionary<int, int> ingredientIDQuantity { get; set; }
+        public Dictionary<int, int>? ingredientIDQuantity { get; set; } = new Dictionary<int, int>();
 
         [BindProperty]
-        [EachValueRequired(ErrorMessage = "Jednotka je povinná")]
-        public List<int> unitSelect { get; set; }
+        [ValueRequiredListAttribute("Jednotka", ErrorMessage = "Jednotka je povinná")]
+        public List<int>? unitSelect { get; set; } = new List<int>();
 
 
-        public List<SelectListItem> Options { get; set; }
-        public List<SelectListItem> UnitOptions { get; set; }
+        public List<SelectListItem>? Options { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem>? UnitOptions { get; set; } = new List<SelectListItem>();
 
 
         public void OnGet(bool isMetric)
@@ -74,8 +73,7 @@ namespace BookOfRecipes.Pages.NewRecipe
         public async Task<IActionResult> OnPostAsync()
         {
 
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid) {
                 OnGet(isMetric: false);
                 await OnGetUnit(isMetric: false);
                 return Page();
@@ -100,6 +98,8 @@ namespace BookOfRecipes.Pages.NewRecipe
                 if (await _context.Recipes.AnyAsync(r => r.NameOfRecipe == Recipe.NameOfRecipe && r.Author == Recipe.Author))
                 {
                     ModelState.AddModelError("DuplicateRecipe", "Tento recept již existuje");
+                    OnGet(isMetric: false);
+                    await OnGetUnit(isMetric: false);
                     return Page();
                 }
                 else

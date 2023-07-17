@@ -8,47 +8,64 @@
 
 <h3 align="center" style="color:darkred">@Html.ValidationMessage("DuplicateRecipe")</h3>
 
-<div class="form-check form-switch">
-    <input class="form-check-input" type="checkbox" role="switch" id="isMetricCheckbox" >
-    <label id="flexSwitchCheckChecked" class="form-check-label" for="isMetricCheckbox">Metrické jednotky</label>
-</div>
-
-
 <form method="post" id="myForm">
-
-    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
-    <label for="recipeName">Name of the recipe</label>
-    <input type="text" name="Recipe.NameOfRecipe" asp-for="Recipe.NameOfRecipe" />
-    <span asp-validation-for="Recipe.NameOfRecipe" class="text-danger"></span>
-        
-        @*<span asp-validation-for="Recipe.NameOfRecipe" class="text-danger"></span>*@
-    <label for="authorName">Author</label>
-    <input type="text" name="Recipe.Author" asp-for="Recipe.Author" />
-    <span asp-validation-for="Recipe.Author" class="text-danger"></span>
+    <div class="row mb-4 justify-content-center">
+        <div class="col-2 d-flex align-items-center">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="isMetricCheckbox">
+                <label id="flexSwitchCheckChecked" class="form-check-label" for="isMetricCheckbox">Metrické jednotky</label>
+            </div>
+        </div>
+        <div class="col-3 d-flex align-items-center">
+            <input class="form-control me-2" type="text" name="Recipe.NameOfRecipe" asp-for="Recipe.NameOfRecipe" placeholder="Název receptu..." />
+            <span asp-validation-for="Recipe.NameOfRecipe" class="text-danger"></span>
+        </div>
+        <div class="col-3 d-flex align-items-center">
+            <input class="form-control me-2" type="text" name="Recipe.Author" asp-for="Recipe.Author" placeholder="Autor..." />
+            <span asp-validation-for="Recipe.Author" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col d-flex align-items-center">
+            <div class="mx-auto text-center">
+                <textarea id="default" asp-for="Recipe.Directions" placeholder="Postup..."></textarea>
+                <span asp-validation-for="Recipe.Directions" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
     
-        @*<span asp-validation-for="Recipe.Author" class="text-danger"></span>*@
-    <label for="directions">Directions</label>
-    <textarea id="default" asp-for="Recipe.Directions"></textarea>
-    <span asp-validation-for="Recipe.Directions" class="text-danger"></span>
-    <h4>Ingredience</h4>
+    <br>
+    <h4 class="text-center">Ingredience</h4>
     <br>
 
     <input value="1" type="hidden" disabled="disabled" id="index" />
-    <div id="rowContainer">
-        <div id="newRow[0]">
-            <select id="ingredientsIDs[0]" name="ingredientIDQuantity[0].Key" asp-items="Model.Options"></select>
-            <input type="number" name="ingredientIDQuantity[0].Value" />
-            <span asp-validation-for="ingredientIDQuantity" class="text-danger"></span>
-            <select asp-items="Model.UnitOptions" id="unitSelect[0]" class="unitSelect" name="unitSelect[0]">
-                <option>Jednotka</option>
-            </select>
-            <span asp-validation-for="unitSelect" class="text-danger"></span>
-            <button type="button" id="removeBtn[0]" onclick="RemoveRow(this)">Odebrat ingredienci</button>
+    <div id="rowContainer" style="margin: 0 auto;">
+        <div id="newRow[0]" class="row mb-2 justify-content-center">
+            <div class="col-2">
+                <select class="form-select" id="ingredientsIDs[0]" name="ingredientIDQuantity[0].Key" asp-items="Model.Options"></select>
+            </div>
+            <div class="col-2">
+                <input class="form-control" type="number" name="ingredientIDQuantity[0].Value" placeholder="Množství" min="0"/>
+                <span asp-validation-for="ingredientIDQuantity" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <select asp-items="Model.UnitOptions" id="unitSelect[0]" class="unitSelect form-select" name="unitSelect[0]">
+                    <option value="0">Jednotka</option>
+                </select>
+                <span asp-validation-for="unitSelect" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-danger" type="button" id="removeBtn[0]" onclick="RemoveRow(this)">Odebrat ingredienci</button>
+            </div>   
         </div>
     </div>
-
-    <button type="button" id="addRow" onclick="Add()">Přidat ingredienci</button>
-    <input type="submit" value="Uložit">        
+    <div class="row-cols-2 text-center mt-5">
+        <button class="btn btn-info" type="button" id="addRow" onclick="Add()">Přidat ingredienci</button>
+    </div> 
+    <div class="row-cols-4 text-center mt-5">
+        <input class="btn btn-success btn-lg" type="submit" value="Uložit">
+    </div>
+         
 </form>
 
 
@@ -57,29 +74,53 @@
     <script>
         function Add() {
             let index = document.getElementById("index");
-            let div = document.getElementById("rowContainer")
+            let div = document.getElementById("rowContainer");
 
-            let newDiv = document.createElement("div")
-            newDiv.id = "newRow[" + index.value + "]"
+            //newRow Container
+            let newDiv = document.createElement("div");
+            newDiv.id = "newRow[" + index.value + "]";
+            newDiv.className = "row mb-2 justify-content-center";
+
+            //container for ingredient select
+            let ingSelectDiv = document.createElement("div");
+            ingSelectDiv.className = "col-2";
             
-            let newSelect = document.createElement("select")
-            newSelect.name = "ingredientIDQuantity[" + index.value + "].Key"
+            let newSelect = document.createElement("select");
+            newSelect.name = "ingredientIDQuantity[" + index.value + "].Key";
+            newSelect.className = "form-select";
+
+            //container for quantity input
+            let quantityInputtDiv = document.createElement("div");
+            quantityInputtDiv.className = "col-2";
 
             let newInput = document.createElement("input")
-            newInput.name = "ingredientIDQuantity[" + index.value + "].Value"
+            newInput.name = "ingredientIDQuantity[" + index.value + "].Value";
+            newInput.className = "form-control"
+            newInput.setAttribute("placeholder", "Množství");
+            newInput.setAttribute("type", "number");
+            newInput.setAttribute("min", "0");
+
+
+            //container for unit select
+            let unitSelectDiv = document.createElement("div");
+            unitSelectDiv.className = "col-2";
+
+            let newUnitSelect = document.createElement('select');
+            newUnitSelect.name = "unitSelect[" + index.value + "]";
+            newUnitSelect.className = "unitSelect form-select";
+
+            //container for btn remove
+            let btnRemoveDiv = document.createElement("div");
+            btnRemoveDiv.className = "col-2";
 
             let newRemoveBtn = document.createElement("button");
             newRemoveBtn.textContent = "Odebrat ingredienci";
             newRemoveBtn.id = "removeBtn[" + index.value + "]";
             newRemoveBtn.setAttribute('onclick', 'RemoveRow(this)');
-
-            let newUnitSelect = document.createElement('select')
-            newUnitSelect.name = "unitSelect[" + index.value + "]"
-            newUnitSelect.className = "unitSelect"
-
+            newRemoveBtn.className = "btn btn-danger";
             
 
-            var sourceDropdown = document.getElementById("ingredientsIDs[0]")
+            var sourceDropdown = document.getElementById("ingredientsIDs[0]");
 
             for (var i = 0; i < sourceDropdown.options.length; i++) {
                 var option = sourceDropdown.options[i];
@@ -89,7 +130,7 @@
                 newSelect.appendChild(newOption)
             }
 
-            var sourceDropdown2 = document.getElementById("unitSelect[0]")
+            var sourceDropdown2 = document.getElementById("unitSelect[0]");
 
             for (var i = 0; i < sourceDropdown2.options.length; i++) {
                 var option = sourceDropdown2.options[i];
@@ -100,15 +141,25 @@
             }
 
             div.appendChild(newDiv);
-            newDiv.appendChild(newSelect);
-            newDiv.appendChild(newInput);
-            newDiv.appendChild(newUnitSelect);
-            newDiv.appendChild(newRemoveBtn);
+            newDiv.append(ingSelectDiv, quantityInputtDiv, unitSelectDiv, btnRemoveDiv);
+            ingSelectDiv.appendChild(newSelect);
+            quantityInputtDiv.appendChild(newInput);
+            unitSelectDiv.appendChild(newUnitSelect);
+            btnRemoveDiv.appendChild(newRemoveBtn);
+
+            //newDiv.appendChild(newSelect);
+            //newDiv.appendChild(newInput);
+            //newDiv.appendChild(newUnitSelect);
+            //newDiv.appendChild(newRemoveBtn);
             index.value++;
         }
 
         function RemoveRow(button){
-            button.parentElement.remove();
+            if (button.parentElement.parentElement == document.getElementById("newRow[0]")) {
+                console.log("Cannot remove!!");
+            } else {
+                button.parentElement.parentElement.remove();
+            }     
         }
 
     </script>

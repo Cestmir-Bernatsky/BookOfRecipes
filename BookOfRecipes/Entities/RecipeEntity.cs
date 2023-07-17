@@ -7,13 +7,15 @@ namespace BookOfRecipes.Entities
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Jméno receptu je povinné")]
-        public string NameOfRecipe { get; set; }
+        public string? NameOfRecipe { get; set; }
 
         [Required(ErrorMessage = "Autor receptu je povinný")]
-        public string Author { get; set; }
+        public string? Author { get; set; }
 
         [Required(ErrorMessage = "Postup receptu je povinný")]
-        public string Directions { get; set; }
-        public ICollection<RecipeIngredientEntity> RecipeIngredients { get; set; }
+        public string? Directions { get; set; }
+
+
+        public ICollection<RecipeIngredientEntity>? RecipeIngredients { get; set; }
     }
 }
